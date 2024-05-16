@@ -26,7 +26,7 @@ function ResourceCard(props) {
             <Card.Body>
                 <Card.Title>{props.name}</Card.Title>
                 <div className="d-flex justify-content-between">
-                    <Link className="btn btn-primary" to={`/${props.resource}/${props.uid}`} resource={props.resource}>Read More</Link>
+                    <Link className="btn btn-primary" to={`/${props.resource}/${props.uid}`} resource={props.resource}>Leer más</Link>
                     <Button variant="warning" onClick={(e) => actions.addFavorite(props.name, props.uid, props.resource)}><FontAwesomeIcon icon={faHeart} /></Button>
                 </div>
             </Card.Body>

@@ -22,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getSWAPI: async (resource) => {
                 try {
                         const result = await getSWAPI.get(resource);
-						console.log(result);
+						//console.log(result);
 						const store = getStore();
                         setStore({...store, [resource]: result });
                         return result;
@@ -34,8 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             addFavorite: (name, uid, resource) => {
 				const newFavorite = addFavoriteDispatcher.addFavorite(name, uid, resource);
 				setStore({ favorites: [...getStore().favorites, newFavorite] });
-				console.log('/' + resource + '/' + uid);
-                
+				              
             },
             deleteFavorite: (name) => {
 				const newFavorites = deleteFavoriteDispatcher.deleteFavorite(name, getStore(). favorites);
