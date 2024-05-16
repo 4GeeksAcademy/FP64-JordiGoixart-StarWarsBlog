@@ -21,13 +21,13 @@ function ResourceCard(props) {
     const imageUrl = getImageUrl(props.uid);
 
     return (
-        <Card className="card" style={{ width: '18rem', marginBottom: '20px' }} key={props.id}>
+        <Card className="card" style={{ width: '18rem', marginBottom: '20px' }} key={props.id} bg="dark" data-bs-theme="dark" >
             <Card.Img variant="top" src={imageUrl} />
             <Card.Body>
                 <Card.Title>{props.name}</Card.Title>
                 <div className="d-flex justify-content-between">
-                    <Link className="btn btn-primary" to={`/${props.resource}/${props.uid}`} resource={props.resource}>Leer más</Link>
-                    <Button variant="warning" onClick={(e) => actions.addFavorite(props.name, props.uid, props.resource)}><FontAwesomeIcon icon={faHeart} /></Button>
+                    <Link className="btn btn-light" to={`/${props.resource}/${props.uid}`} resource={props.resource}>Leer más</Link>
+                    <Button variant="danger" onClick={(e) => actions.addFavorite(props.name, props.uid, props.resource)}><FontAwesomeIcon icon={faHeart} /></Button>
                 </div>
             </Card.Body>
         </Card>

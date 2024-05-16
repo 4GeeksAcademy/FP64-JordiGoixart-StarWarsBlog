@@ -30,7 +30,7 @@ export const MainNavbar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav" className="d-flex justify-content-end">
                     <Nav>
                         <Dropdown>
-                            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                            <Dropdown.Toggle variant="light" id="dropdown-basic" >
                                 Favoritos <Badge pill bg="light" text="dark">{store.favorites.length}</Badge>
                             </Dropdown.Toggle>
                             {store.favorites.length > 0 ? (
