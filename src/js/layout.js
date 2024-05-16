@@ -6,11 +6,11 @@ import { Home } from "./views/home";
 import { Demo } from "./views/demo";
 import SingleCharacter from "./views/singleCharacter";
 import SingleSpecie from "./views/singleSpecie";
-import SinglePlanet from "./views/singlePlanet";
+import singleVehicle from "./views/singleVehicle";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { MainNavbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 import { Container } from 'react-bootstrap';
@@ -26,12 +26,12 @@ const Layout = () => {
 		<div>
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Navbar />
+				<MainNavbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/people/:theid" element={<SingleCharacter/>} />
 						<Route path="/species/:theid" element={<SingleSpecie/>} />
-						<Route path="/planets/:theid" element={<SinglePlanet/>} />
+						<Route path="/vehicle/:theid" element={<singleVehicle/>} />
 						<Route path="/demo" element={<Demo />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 					</Routes>

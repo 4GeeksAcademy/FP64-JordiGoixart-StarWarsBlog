@@ -12,11 +12,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			species: [],
 			specie: {},
 
-			planets: [],
-			planet: {},
+			vehicles: [],
+			vehicle: {},
 
 			favorites: [],
-			resources: ['people', 'species', 'planets']
+			resources: ['people', 'species', 'vehicles']
 		},
 		actions: {
 			getSWAPI: async (resource) => {
@@ -36,10 +36,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ favorites: [...getStore().favorites, newFavorite] });
 				              
             },
-            deleteFavorite: (name) => {
-				const newFavorites = deleteFavoriteDispatcher.deleteFavorite(name, getStore(). favorites);
+			deleteFavorite: (favorite) => {
+				const newFavorites = deleteFavoriteDispatcher.deleteFavorite(favorite, getStore().favorites);
 				setStore({ favorites: newFavorites });
 			}
+			
 		}
 	};
 };

@@ -16,7 +16,7 @@ export const Home = () => {
     useEffect(() => {
         actions.getSWAPI('people');
         actions.getSWAPI('species');
-        actions.getSWAPI('planets')
+        actions.getSWAPI('vehicles')
     }, []);
 
     return (
@@ -56,16 +56,16 @@ export const Home = () => {
             </Row>
             <Row className="mt-2">
                 <Col xs={12}>
-                    <h1 className="text-danger">Planetas</h1>
+                    <h1 className="text-danger">Vehículos</h1>
                 </Col>
             </Row>
             <Row className="mt-4 flex-nowrap overflow-auto">
                 <Col xs={12} className="d-flex flex-nowrap">
 
                     <div className="scroll-horizontal d-flex flex-nowrap">
-                        {store.planets.map((planet) => {
+                        {store.vehicles.map((planet) => {
                             return (
-                                <ResourceCard key={planet.uid} uid={planet.uid} name={planet.name} resource="planets" />
+                                <ResourceCard key={planet.uid} uid={planet.uid} name={planet.name} resource="vehicles" />
                             )
                         })}
                     </div>

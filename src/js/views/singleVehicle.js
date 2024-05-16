@@ -3,22 +3,22 @@ import { Link, useParams } from "react-router-dom";
 import { Container as BootstrapContainer, Row, Col, Image } from "react-bootstrap";
 import { Context } from "../store/appContext";
 
-const singlePlanet = () => {
+const singleVehicle = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
-    const planet = store.planet;
+    const vehicle = store.vehicle;
 
     useEffect(() => {
-        actions.getSWAPI(`planets/${params.theid}`);
+        actions.getSWAPI(`vehicles/${params.theid}`);
     }, [actions, params.theid]);
 
-    const renderPlanetDetails = () => {
-        return Object.keys(planet).map((key, index) => {
+    const renderVehicleDetails = () => {
+        return Object.keys(vehicle).map((key, index) => {
             if (
                 key !== "name" &&
-                typeof planet[key] !== "object" &&
-                planet[key] !== "" &&
-                !planet[key].startsWith("http")
+                typeof vehicle[key] !== "object" &&
+                vehicle[key] !== "" &&
+                !vehicle[key].startsWith("http")
             ) {
                 return (
                     <Col key={key}>
@@ -29,7 +29,7 @@ const singlePlanet = () => {
                                 )}:
                             </strong>
                         </div>
-                        <div className="d-block">{planet[key]}</div>
+                        <div className="d-block">{vehicle[key]}</div>
                     </Col>
                 );
             }
@@ -42,12 +42,12 @@ const singlePlanet = () => {
             <BootstrapContainer>
                 <Row>
                     <Col>
-                        <Image
-                            src={params.theid ? `https://starwars-visualguide.com/assets/img/planets/${params.theid}.jpg` : ""}
+                    <Image
+                            src={params.theid ? `https://starwars-visualguide.com/assets/img/vehicles/${params.theid}.jpg` : ""}
                         />
                     </Col>
                     <Col>
-                        <h1>{planet.name}</h1>
+                        <h1>{vehicle.name}</h1>
                         <p>
                             Lorem ipsum odor amet, consectetuer adipiscing elit. Ac purus in massa egestas mollis
                             varius; dignissim elementum. Mollis tincidunt mattis hendrerit dolor eros enim, nisi ligula
@@ -57,7 +57,7 @@ const singlePlanet = () => {
 
                     </Col>
                 </Row>
-                <Row className="border-top mt-2 pt-3">{renderPlanetDetails()}</Row>
+                <Row className="border-top mt-2 pt-3">{renderVehicleDetails()}</Row>
             </BootstrapContainer>
             <Link to="/">
                 <span className="btn btn-primary btn-lg mt-5" href="/" role="button">
@@ -68,4 +68,4 @@ const singlePlanet = () => {
     );
 };
 
-export default singlePlanet;
+export default singleVehicle;
