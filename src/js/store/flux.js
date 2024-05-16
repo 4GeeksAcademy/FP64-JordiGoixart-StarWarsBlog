@@ -22,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getSWAPI: async (resource) => {
                 try {
                         const result = await getSWAPI.get(resource);
-						//console.log(result);
+						console.log("Result from API:", result);
 						const store = getStore();
                         setStore({...store, [resource]: result });
                         return result;

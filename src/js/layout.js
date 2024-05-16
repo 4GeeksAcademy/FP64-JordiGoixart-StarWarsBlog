@@ -3,17 +3,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
-import { Demo } from "./views/demo";
+
 import SingleCharacter from "./views/singleCharacter";
 import SingleSpecie from "./views/singleSpecie";
-import singleVehicle from "./views/singleVehicle";
-import { Single } from "./views/single";
+import SingleVehicle from "./views/singleVehicle";
 import injectContext from "./store/appContext";
 
 import { MainNavbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-
-import { Container } from 'react-bootstrap';
 
 
 //create your first component
@@ -31,8 +28,7 @@ const Layout = () => {
 						<Route path="/" element={<Home />} />
 						<Route path="/people/:theid" element={<SingleCharacter/>} />
 						<Route path="/species/:theid" element={<SingleSpecie/>} />
-						<Route path="/vehicle/:theid" element={<singleVehicle/>} />
-						<Route path="*" element={<h1>Not found!</h1>} />
+						<Route path="/vehicles/:theid" element={<SingleVehicle />} />
 					</Routes>
 					<Footer />
 				</ScrollToTop>

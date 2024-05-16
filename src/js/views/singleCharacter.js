@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Container as BootstrapContainer, Row, Col, Image } from 'react-bootstrap';
 import { Context } from "../store/appContext";
@@ -8,26 +8,42 @@ import PropTypes from "prop-types";
 const SingleCharacter = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
-    const character = store.character;
+    const [character, setCharacter] = useState(null);
+    const [propertiesToShow, setPropertiesToShow] = useState([]);
 
     useEffect(() => {
-        actions.getSWAPI(`people/${params.theid}`);
-    }, [actions, params.theid]);
+        const fetchCharacter = async () => {
+            try {
+                const response = await fetch(`https://www.swapi.tech/api/people/${params.theid}`);
+                if (!response.ok) {
+                    throw new Error(`Error obteniendo personaje de API: ${response.statusText}`);
+                }
+                const data = await response.json();
+                setCharacter(data.result.properties);
+
+                const properties = Object.keys(data.result.properties);
+                setPropertiesToShow(properties.filter(property => data.result.properties[property] !== ""));
+            } catch (error) {
+                console.error("Error al obtener personaje:", error);
+            }
+        };
+
+        fetchCharacter();
+    }, [params.theid]);
 
     const renderCharacterDetails = () => {
+        if (!character) {
+            return null;
+        }
+
         return Object.keys(character).map((key, index) => {
-            if (
-                key !== "name" &&
-                typeof character[key] !== "object" &&
-                character[key] !== "" &&
-                !character[key].startsWith("http")
-            ) {
+            if (!propertiesToShow.includes(key)) {
                 return (
                     <Col key={key}>
                         <div className="d-inline-block">
-                        <strong>
-    ${key.replace(/_/g, " ").replace(/\b\w/g, match => match.toUpperCase())}:
-</strong>
+                            <strong>
+                                ${key.replace(/_/g, " ").replace(/\b\w/g, match => match.toUpperCase())}:
+                            </strong>
                         </div>
                         <div className="d-block">{character[key]}</div>
                     </Col>
@@ -47,13 +63,20 @@ const SingleCharacter = () => {
 />
                     </Col>
                     <Col>
-                        <h1>{character.name}</h1>
-                        <p>
-                            Lorem ipsum odor amet, consectetuer adipiscing elit. Ac purus in massa egestas mollis
-                            varius; dignissim elementum. Mollis tincidunt mattis hendrerit dolor eros enim, nisi ligula
-                            ornare. Hendrerit parturient habitant pharetra rutrum gravida porttitor eros feugiat. Mollis
-                            elit sodales taciti duis praesent id. Consequat urna vitae morbi nunc congue.
-                        </p>
+                        {character ? (
+                            <>
+                                <h1>{character.name}</h1>
+                                <p>
+                                    <strong>Color de ojos:</strong> {character.eye_color}<br />
+                                    <strong>Género:</strong> {character.gender}<br />
+                                    <strong>Color de cabello:</strong> {character.hair_color}<br />
+                                    <strong>Altura:</strong> {character.height} cm<br />
+                                    <strong>Masa:</strong> {character.mass} kg<br />
+                                </p>
+                            </>
+                        ) : (
+                            <p>Cargando...</p>
+                        )}
                     </Col>
                 </Row>
                 <Row className="border-top mt-2 pt-3">{renderCharacterDetails()}</Row>

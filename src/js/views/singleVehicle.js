@@ -1,32 +1,46 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Container as BootstrapContainer, Row, Col, Image } from "react-bootstrap";
 import { Context } from "../store/appContext";
 
-const singleVehicle = () => {
+const SingleVehicle = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
-    const vehicle = store.vehicle;
+    const [vehicle, setVehicle] = useState(null);
+    const [propertiesToShow, setPropertiesToShow] = useState([]);
 
     useEffect(() => {
-        actions.getSWAPI(`vehicles/${params.theid}`);
-    }, [actions, params.theid]);
+        const fetchVehicle = async () => {
+            try {
+                const response = await fetch(`https://www.swapi.tech/api/vehicles/${params.theid}`);
+                if (!response.ok) {
+                    throw new Error(`Error obteniendo vehículo de API: ${response.statusText}`);
+                }
+                const data = await response.json();
+                setVehicle(data.result.properties);
+
+                const properties = Object.keys(data.result.properties);
+                setPropertiesToShow(properties.filter(property => data.result.properties[property] !== ""));
+            } catch (error) {
+                console.error("Error al obtener vehículo:", error);
+            }
+        };
+
+        fetchVehicle();
+    }, [params.theid]);
 
     const renderVehicleDetails = () => {
+        if (!vehicle) {
+            return null;
+        }
+    
         return Object.keys(vehicle).map((key, index) => {
-            if (
-                key !== "name" &&
-                typeof vehicle[key] !== "object" &&
-                vehicle[key] !== "" &&
-                !vehicle[key].startsWith("http")
-            ) {
+            if (!propertiesToShow.includes(key)) {
                 return (
                     <Col key={key}>
                         <div className="d-inline-block">
                             <strong>
-                                ${key.replace(/_/g, " ").replace(/\b\w/g, match =>
-                                    match.toUpperCase()
-                                )}:
+                                ${key.replace(/_/g, " ").replace(/\b\w/g, match => match.toUpperCase())}:
                             </strong>
                         </div>
                         <div className="d-block">{vehicle[key]}</div>
@@ -35,30 +49,41 @@ const singleVehicle = () => {
             }
             return null;
         });
-    }
+    };
 
     return (
         <div className="container mt-5">
             <BootstrapContainer>
                 <Row>
                     <Col>
-                    <Image
-                            src={params.theid ? `https://starwars-visualguide.com/assets/img/vehicles/${params.theid}.jpg` : ""}
+                        <Image
+                            src={vehicle ? `https://starwars-visualguide.com/assets/img/vehicles/${params.theid}.jpg` : ""}
                         />
                     </Col>
                     <Col>
-                        <h1>{vehicle.name}</h1>
-                        <p>
-                            Lorem ipsum odor amet, consectetuer adipiscing elit. Ac purus in massa egestas mollis
-                            varius; dignissim elementum. Mollis tincidunt mattis hendrerit dolor eros enim, nisi ligula
-                            ornare. Hendrerit parturient habitant pharetra rutrum gravida porttitor eros feugiat. Mollis
-                            elit sodales taciti duis praesent id. Consequat urna vitae morbi nunc congue.
-                        </p>
-
+                        {vehicle ? (
+                            <>
+                                <h1>{vehicle.name}</h1>
+                                <p>
+                                    <strong>Modelo:</strong> {vehicle.model}<br />
+                                    <strong>Fabricante:</strong> {vehicle.manufacturer}<br />
+                                    <strong>Clase:</strong> {vehicle.vehicle_class}<br />
+                                    <strong>Coste:</strong> {vehicle.cost_in_credits} credits<br />
+                                    <strong>Velocidad:</strong> {vehicle.max_atmosphering_speed}<br />
+                                    <strong>Longitud:</strong> {vehicle.length}m<br />
+                                    <strong>Capacidad de carga:</strong> {vehicle.cargo_capacity}<br />
+                                    <strong>Tripulación mínima:</strong> {vehicle.crew}<br />
+                                    <strong>Pasajeros:</strong> {vehicle.passengers}<br />
+                                </p>
+                            </>
+                        ) : (
+                            <p>Cargando...</p>
+                        )}
                     </Col>
                 </Row>
                 <Row className="border-top mt-2 pt-3">{renderVehicleDetails()}</Row>
             </BootstrapContainer>
+
             <Link to="/">
                 <span className="btn btn-primary btn-lg mt-5" href="/" role="button">
                     Atrás
@@ -68,4 +93,5 @@ const singleVehicle = () => {
     );
 };
 
-export default singleVehicle;
+export default SingleVehicle;
+
